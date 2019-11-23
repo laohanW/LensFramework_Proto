@@ -1,0 +1,10 @@
+package com.lh.demo.protocol;
+
+import "login.proto";
+import "test.proto";
+
+// 所有客户端->服务器的消息类型
+enum ECSCmd {
+  CS_LoginRequest = 30001;
+  CS_PingRequest = 20101;
+}

@@ -1,0 +1,40 @@
+package com.lh.demo.protocol;
+
+enum ENUM_TEST {
+  testGOLD = 2; // 黄金
+  testFOOD = 3; // 粮草
+  testEXPLOIT = 4; // 功勋
+  /*testWOOD = 5; // 木材
+  testIRON = 6; // 生铁
+  testGOLD_B = 7; // 黄金B，非充值黄金，仅供后端使用*/
+  // testPCHIEVE = 9; // political achievements 政绩,自己造的词,念'脾气无'
+  testSILVER = 10; // 银两
+}
+
+message ProtoTestSturct {
+  required int32 inttest = 1; // 数量
+  required float floattest = 2; // 数量
+  required double doubletest = 3; // 数量
+  required string stringtest = 4; // 数量
+  required bool booltest = 5; // 数量
+}
+
+message ProtocolTest {
+  required ENUM_TEST res = 1; // 类型
+  required int32 inttest = 2; // 数量
+  required float floattest = 3; // 数量
+  required double doubletest = 4; // 数量
+  required string stringtest = 5; // 数量
+  required bool booltest = 6; // 数量
+  repeated ProtoTestSturct listtest = 7; // 数量
+  //optional map<int,string> maptest = 8;
+}
+
+
+message C2SProto {
+//  oneof c2s_oneof {
+  optional ProtocolTest prototest = 1;
+    //LoginRequest loginrequest = 2;
+//  }
+}
+

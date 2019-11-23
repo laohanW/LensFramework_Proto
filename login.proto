@@ -1,0 +1,263 @@
+package com.lh.demo.protocol;
+
+// 登陆请求
+message LoginRequest {
+  required string account = 1; // 账号
+  required string serverid = 2; // 服务器id
+  //required string playerId = 3; // 角色id
+  required int32 timestamp = 4; // 时间戳(秒)
+  required string digest = 5; // 校验摘要
+  optional string clientIp = 6; //登录ip
+  optional string clientpubkey = 7;
+  optional string nickname = 8;
+  repeated TecentMSDKParam msdkParams = 9;
+  //optional TencentLoginParams tencentLoginParams = 7;
+}
+
+enum MSDKParam {
+  OPEN_ID = 1; //"普通用户唯一标识"),
+  PLATFORM = 2; //"ios: 0/android: 1"),
+  VERSION = 3; //"客户端版本"),
+  TELECOM_OPERATE = 4; //"运营商(1：移动 2：联通 3：电信）"),
+  REG_CHANNEL = 5; //"注册渠道（0：QQ注册 1：微信注册 2:游客注册）"),
+  LOGIN_CHANNEL = 6; //"登录渠道（0：QQ登录 1：微信登录 2：游客登录）"),
+  NETWORK = 7; //"网络制式（1：WIFI 2：2G 3：3G 4：4G）"),
+  SYSTEM_HARDWARE = 8; //"移动终端机型"),
+  SYSTEM_SOFTWARE = 9; //"操作系统版本"),
+  SCREEN_WIDTH = 10; // "显示屏宽度"),
+  SCREEN_HIGHT = 11; //"显示屏高度"),
+  DENSITY = 12; //"像素密度"),
+  CPU_HARDWARE = 13; //"cpu类型;频率;核数"),
+  MEMORY = 14; //"内存信息"),
+  GL_RENDER = 15; //"open gl render信息"),
+  GL_VERSION = 16; //"open gl版本信息"),
+  DEVICE_ID = 17; //"设备ID"),
+  DESKTOP = 18; //腾讯登陆渠道
+
+  // 米大师param
+  OPEN_KEY = 19;
+  PF = 20;
+  PF_KEY = 21;
+  IDFA = 22;//IDFA
+}
+
+enum PlatForm {
+  IOS = 0; //ios
+  ANDROID = 1; //安卓
+}
+
+enum Channel {
+  QQ = 0; //QQ
+  WECHAT = 1; //微信
+  VISITOR = 2; //游客
+}
+
+enum Network {
+  WIFI = 1;
+  _2G = 2;
+  _3G = 3;
+  _4G = 4;
+  _5G = 5; //暂无
+}
+
+enum TelecomOperate {
+  CMCC = 1; //中国移动
+  CUCC = 2; //中国联通
+  CTCC = 3; //中国电信
+}
+
+message TecentMSDKParam {
+  required MSDKParam paramType = 1;
+  required string paramValue = 2;
+}
+
+message TencentLoginParams {
+  optional string openkey = 1; //用户会话秘钥
+  optional string pf = 2; //来源平台
+  optional string pfkey = 3;
+  optional string zoneid = 4; //平台在后台配置的serverId
+  optional string via = 5; //用户来源子渠道
+  optional string userSource = 6; //任务集市的来源
+  optional string contractId = 7; //任务集市的id
+}
+
+// 角色信息
+message PlayerInfo {
+  required string csid = 1; // 当前(合服后)服务器id
+  required string nickname = 2; // 昵称
+  required string icon = 3; // 头像
+  required int32 sex = 4; //性别   1:男 2:女
+
+  required int32 level = 5; // 等级
+  required int32 exp = 6; // 经验
+  required bool isVipActive = 7;
+  required int32 vipLevel = 8; // vip等级
+  required int32 vipExp = 9; // vip经验
+
+  optional int64 allianceId = 11; // 所属联盟
+  required int32 castleGrid = 12; //城堡位置
+
+  required int64 power = 13; //战斗力
+  required int64 createTime = 14; //创建时间
+  optional int64 playerId = 15; //   玩家ID
+  optional int64 allianceWorldId = 16; // 联盟worldId
+  optional bool isLevelUp = 17; //true 玩家离线升级
+  optional bool isCalstleLevelUp = 18; //true 城堡离线升级
+  optional int32 titleId = 19; // 头衔ID
+}
+
+message SCPlayerLevelInfo {
+  required int32 level = 1; // 等级
+  required int32 exp = 2; // 经验
+}
+
+message SCPlayerVipInfo {
+  required int32 vipLevel = 1; // vip等级
+  required int32 vipExp = 2; // vip经验
+  required int32 loginDays = 3; //连续登陆天数
+  required bool isAuto = 4; //是否是每日自动获取vip点数
+}
+
+message SCPlayerPower {
+  required int64 power = 1; //战斗力
+}
+
+//战力变更的原因
+enum PowerChangedReason {
+  BUILDING_LEVEL_UP = 1; //建筑升级
+  TECH_STUDY = 2; //科技研发
+  TRAINING_SOLDIERS = 3; //训练士兵
+  CURING_SOLDIERS = 4; //治疗士兵
+  HERO_RANK_UP = 5; //英雄升阶
+  HERO_LEVEL_UP = 6; //英雄升级
+  HERO_STAR_UP = 7; //英雄升星
+  HERO_PUT_ON_EQUIPMENT = 8; // 英雄穿装备
+  APPARATUS_BUILD = 9; //器械建造
+  APPARATUS_REPAIR = 10; //器械修复
+  HERO_UNLOCK = 11; //指挥官解锁
+  VIP_LEVEL_UP = 12; //vip升级
+  FAMILY_LEVEL_UP = 13; //家族升级
+}
+
+//战力变更的具体数值
+message SCPlayerPowerChanged {
+  required int64 power = 1; //变更的战力
+  required int32 reason = 2; //战力变更原因，对应PowerChangedReason
+  optional int32 param1 = 3; //扩展参数1
+  optional int32 param2 = 4; //扩展参数2
+}
+
+// 登陆响应
+message LoginResponse {
+  optional PlayerInfo playerInfo = 1; // 玩家角色信息
+  optional int32 timeZone = 2; // 服务器时区
+  optional int64 servertime = 3;
+  optional LoginResult result = 4; // 登陆结果
+  optional string serverkey = 5; //    临时密钥
+}
+
+enum LoginResult {
+  LOGIN_SUCCESS = 0;
+  /** token过期*/
+  TOKEN_EXPIRED = 1;
+  /** 服务器没有开服*/
+  WORLD_CLOSE = 2;
+  /** 时间戳非法*/
+  TIMESTAMP_VALID = 3;
+  /** 参数错误*/
+  PARAM_INVALID = 4;
+  /** 服务器繁忙 */
+  SERVER_IS_BUSY = 5;
+  /** 注册已达上限 */
+  REGISTER_LIMIT = 6;
+}
+
+message LoginSuccReq {
+
+}
+
+message LoginSuccResp {
+
+}
+
+//身份认证请求
+message AntiAddictionVerifyRequest {
+  required string idCard = 1; //身份证
+}
+
+//身份认证请求返回
+message AntiAddictionVerifyResponse {
+  required int32 antiAddicationFlag = 1; //防沉迷标记
+}
+
+// 运营消息类型
+enum OperatePromptType{
+  LOGIN = 1; // 封号：弹窗显示原因，手动操作强制退出到登陆界面
+  TALK = 2; // 禁言：弹窗显示原因，需手动操作
+  SYSTEM = 3; // 系统消息：弹窗显示内容（reason），需手动操作
+}
+
+// 运营消息推送
+message SCOperatePrompt {
+  required OperatePromptType type = 1; // 推送消息类型
+  required string reason = 2; // 原因
+}
+
+message ReconnectRequest {
+  required string account = 1; // 账号
+  required string serverid = 2; // 服务器id
+  required int32 timestamp = 4; // 时间戳(秒)
+  required string digest = 5; // 校验摘要
+  optional string clientIp = 6; //登录ip
+  optional string clientpubkey = 7;
+  repeated TecentMSDKParam msdkParams = 9;
+}
+
+//import "proto_queue.proto";
+//import "proto_resource.proto";
+//import "proto_buff.proto";
+//import "proto_param.proto";
+//import "proto_activity.proto";
+//import "proto_operate_activity.proto";
+message ReconnectResponse {
+  required int32 result = 1;
+  required int64 playerId = 2;
+//  optional int64 allianceId = 3; // 所属联盟
+//  optional int64 allianceWorldId = 4; //联盟所属服
+  optional int32 timeZone = 5; // 服务器时区
+  optional int64 servertime = 6;
+  optional string serverkey = 7; //    临时密钥
+  optional PlayerInfo playerInfo = 8; // 玩家角色信息
+
+//  repeated DisplayResource resourcelist = 10; // 资源列表
+//  repeated QueueDisplay queues = 11; //队列列表
+//  repeated Buff buffList = 12;  //buff列表
+//  repeated ParamDisplay params = 13; //参数列表
+//  repeated ActivityInfo activities = 14; //活动信息列表
+//  repeated OperateActivityInfo operateactivities = 15; //运营活动类型
+}
+
+enum ServerMode {
+  DEBUG = 1;
+  RELEASE = 2;
+}
+
+// 推送服务器当前模式 debug/release
+message SCServerMode {
+  required int32 mode = 1;
+}
+
+// 系统内部公告
+message Announcement {
+  required int32 id = 1; // 公告id
+  required int32 type = 2; // 公告类型
+  required string content = 3; // 公告内容
+  required int32 jumpType = 4; // 跳转类型
+  required string jumpDest = 5; // 跳转目的地
+
+}
+
+// 推送系统内部公告
+message SCSystemAnnouncements {
+  repeated Announcement announcements = 1; // 公告
+}

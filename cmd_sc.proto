@@ -1,0 +1,10 @@
+package com.lh.demo.protocol;
+
+import "login.proto";
+import "test.proto";
+// 所有服务器->客户端的消息类型
+enum ESCCmd {
+  //  oneof sc_one_of {
+  SC_LoginRequest = 30001;
+  SC_ProtoTestSturct=40005;
+}
